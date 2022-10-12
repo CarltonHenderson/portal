@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 import notecomm
 import camera
 import time
