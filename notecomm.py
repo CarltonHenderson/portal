@@ -34,19 +34,21 @@ def send_to_notehub(imageName, destDeviceUID):
     imageData.save('temp.webp', 'webp', optimize=True, quality=2)
     # Image.close(imageName)
 
-    # convert b64
-    b64Data = base64.b64encode(Image.open(b'temp.webp'))
 
-    # send a note.add with the image as the body
-    req = {'req': 'note.add'}
-    req['file'] = 'image.qo'
-    req['sync'] = True
-    req['body'] = {
-        'image': b64Data,
-        'destDeviceUID': destDeviceUID
-    }
-    res = card.Transaction(req)
-    print(res)
+    # convert b64
+    with open("temp.webp", "rb") as image_file:
+        b64Data = base64.b64encode(image_file.read())
+
+        # send a note.add with the image as the body
+        req = {'req': 'note.add'}
+        req['file'] = 'image.qo'
+        req['sync'] = True
+        req['body'] = {
+            'image': b64Data,
+            'destDeviceUID': destDeviceUID
+        }
+        res = card.Transaction(req)
+        print(res)
 
 
 def get_from_notehub(imageName):
