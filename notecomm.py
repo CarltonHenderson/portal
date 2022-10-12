@@ -60,7 +60,7 @@ def get_from_notehub(imageName):
     res = card.Transaction(req)
     if not 'image' in res:
         print("can't get image from notehub right now")
-        # print(res)
+        print(res)
         return
     
     b64Data = res['image']
