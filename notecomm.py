@@ -13,6 +13,7 @@ card = notecard.OpenI2C(port, 0, 0)
 # init needs to be run once on startup, afterward
 # repeatedly alternate send and rcv between the  cards
 
+
 def init_notecard():
     req = {'req': 'hub.set'}
     req['product'] = notehub_uid
@@ -21,30 +22,32 @@ def init_notecard():
     res = card.Transaction(req)
     print(res)
 
-def send_to_notehub(imageName,destDeviceUID):
-    #load image from file
+
+def send_to_notehub(imageName, destDeviceUID):
+    # load image from file
     imageData = Image.open(imageName)
     imageData = imageData.resize((240, 200))
 
     imageData = imageData.convert('RGB')
 
     # Qual 1, 2 have a ~3kb filesize, q3 bumps to 4k with no notable change
-    imageData.save('temp.webp', 'webp', optimize = True, quality = 2)
+    imageData.save('temp.webp', 'webp', optimize=True, quality=2)
     Image.close(imageName)
 
-    #convert b64
+    # convert b64
     b64Data = base64.b64encode(Image.open(b'temp.webp'))
 
-    #send a note.add with the image as the body
+    # send a note.add with the image as the body
     req = {'req': 'note.add'}
     req['file'] = 'image.qo'
     req['sync'] = True
     req['body'] = {
-    'image': b64Data,
-    'destDeviceUID': destDeviceUID
+        'image': b64Data,
+        'destDeviceUID': destDeviceUID
     }
     res = card.Transaction(req)
     print(res)
+
 
 def get_from_notehub(imageName):
     req = {'req': 'note.get'}
@@ -52,7 +55,7 @@ def get_from_notehub(imageName):
     req['sync'] = True
 
     res = card.Transaction(req)
-    #print(res)
+    # print(res)
     b64Data = res['image']
     imageData = base64.b64decode(b64Data)
     imageData = imageData.convert('RGB')
