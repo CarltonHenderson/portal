@@ -32,7 +32,7 @@ def send_to_notehub(imageName, destDeviceUID):
 
     # Qual 1, 2 have a ~3kb filesize, q3 bumps to 4k with no notable change
     imageData.save('temp.webp', 'webp', optimize=True, quality=2)
-    Image.close(imageName)
+    # Image.close(imageName)
 
     # convert b64
     b64Data = base64.b64encode(Image.open(b'temp.webp'))
