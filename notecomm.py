@@ -59,12 +59,12 @@ def get_from_notehub(imageName):
     req['delete'] = True
 
     res = card.Transaction(req)
-    if not 'image' in res:
+    if not ('body' in res and 'image' in res['body']):
         print("can't get image from notehub right now")
         print(res)
         return
     
-    b64Data = res['image']
+    b64Data = res['body']['image']
     imageData = base64.b64decode(b64Data)
     imageData = imageData.convert('RGB')
     imageData.save(imageName, 'jpeg')
