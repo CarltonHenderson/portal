@@ -19,7 +19,7 @@ def init_notecard():
     res = card.Transaction(req)
     print(res)
 
-def send_to_notehub(imageName):
+def send_to_notehub(imageName,destDeviceUID):
     #load image from file 
     imageData = Image.open(imageName)
     imageData = imageData.resize((240, 200))
@@ -39,6 +39,7 @@ def send_to_notehub(imageName):
     req['sync'] = True
     req['body'] = {
     'image': b64Data,
+    'destDeviceUID': destDeviceUID
     }
     res = card.Transaction(req)
     print(res)
