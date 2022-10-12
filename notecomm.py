@@ -37,7 +37,7 @@ def send_to_notehub(imageName, destDeviceUID):
 
     # convert b64
     with open("temp.webp", "rb") as image_file:
-        b64Data = base64.b64encode(image_file.read())
+        b64Data = base64.b64encode(image_file.read()).decode('UTF-8')
 
         # send a note.add with the image as the body
         req = {'req': 'note.add'}
