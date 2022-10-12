@@ -57,7 +57,11 @@ def get_from_notehub(imageName):
     req['sync'] = True
 
     res = card.Transaction(req)
-    # print(res)
+    if not 'image' in res:
+        print("can't get image from notehub right now")
+        # print(res)
+        return
+    
     b64Data = res['image']
     imageData = base64.b64decode(b64Data)
     imageData = imageData.convert('RGB')
