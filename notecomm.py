@@ -6,7 +6,7 @@ import base64
 # pip install python-periphery
 from periphery import I2C
 
-notehub_uid = 'com.blues.portal'
+notehub_uid = 'com.blues.khorlitz:portal'
 port = I2C('/dev/i2c-1')
 card = notecard.OpenI2C(port, 0, 0)
 
