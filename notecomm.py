@@ -56,6 +56,7 @@ def get_from_notehub(imageName):
     req = {'req': 'note.get'}
     req['file'] = 'image.qi'
     req['sync'] = True
+    req['delete'] = True
 
     res = card.Transaction(req)
     if not 'image' in res:
