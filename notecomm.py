@@ -3,6 +3,8 @@ import notecard
 # pip3 install Pillow
 from PIL import Image
 import base64
+# pip install python-periphery
+from periphery import I2C
 
 notehub_uid = 'com.blues.portal'
 port = I2C('/dev/i2c-1')
@@ -20,7 +22,7 @@ def init_notecard():
     print(res)
 
 def send_to_notehub(imageName,destDeviceUID):
-    #load image from file 
+    #load image from file
     imageData = Image.open(imageName)
     imageData = imageData.resize((240, 200))
 
