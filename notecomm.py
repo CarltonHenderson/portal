@@ -1,5 +1,4 @@
 # pip3 install note-python
-from tokenize import String
 import notecard
 # pip3 install Pillow
 from PIL import Image
@@ -20,7 +19,7 @@ def init_notecard():
     res = card.Transaction(req)
     print(res)
 
-def send_to_notehub(imageName: String):
+def send_to_notehub(imageName):
     #load image from file 
     imageData = Image.open(imageName)
     imageData = imageData.resize((240, 200))
@@ -44,7 +43,7 @@ def send_to_notehub(imageName: String):
     res = card.Transaction(req)
     print(res)
 
-def get_from_notehub(imageName: String):
+def get_from_notehub(imageName):
     req = {'req': 'note.get'}
     req['file'] = 'image.qi'
     req['sync'] = True
