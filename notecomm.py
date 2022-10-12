@@ -1,4 +1,5 @@
 # pip3 install note-python
+from tokenize import String
 import notecard
 # pip3 install Pillow
 from PIL import Image
@@ -19,19 +20,19 @@ def init_notecard():
     res = card.Transaction(req)
     print(res)
 
-def send_to_notehub():
+def send_to_notehub(imageName: String):
     #load image from file 
-    imageData = Image.open('imageIn.jpg')
+    imageData = Image.open(imageName)
     imageData = imageData.resize((240, 200))
 
     imageData = imageData.convert('RGB')
 
     # Qual 1, 2 have a ~3kb filesize, q3 bumps to 4k with no notable change
-    imageData.save('imageIn.webp', 'webp', optimize = True, quality = 2)
-    Image.close('imageIn.jpg')
+    imageData.save('temp.webp', 'webp', optimize = True, quality = 2)
+    Image.close(imageName)
 
     #convert b64
-    b64Data = base64.b64encode(Image.open(b'imageIn.webp'))
+    b64Data = base64.b64encode(Image.open(b'temp.webp'))
 
     #send a note.add with the image as the body
     req = {'req': 'note.add'}
@@ -43,7 +44,7 @@ def send_to_notehub():
     res = card.Transaction(req)
     print(res)
 
-def get_from_notehub():
+def get_from_notehub(imageName: String):
     req = {'req': 'note.get'}
     req['file'] = 'image.qi'
     req['sync'] = True
@@ -53,4 +54,4 @@ def get_from_notehub():
     b64Data = res['image']
     imageData = base64.b64decode(b64Data)
     imageData = imageData.convert('RGB')
-    imageData.save('imageOut.jpg', 'jpeg')
+    imageData.save(imageName, 'jpeg')
