@@ -17,6 +17,7 @@ card = notecard.OpenI2C(port, 0, 0)
 def init_notecard():
     req = {'req': 'hub.set'}
     req['product'] = notehub_uid
+    req['host'] = 'i.staging.blues.tools'
     req['mode'] = 'continuous'
     req['sync'] = True
     res = card.Transaction(req)
