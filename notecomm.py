@@ -1,4 +1,5 @@
 # pip3 install note-python
+import io
 import notecard
 # pip3 install Pillow
 from PIL import Image
