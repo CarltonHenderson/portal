@@ -23,6 +23,12 @@ def init_notecard():
     req['sync'] = True
     res = card.Transaction(req)
     print(res)
+    res = card.Transaction({
+        "req": "file.delete",
+        "files": ["image.qi"]
+    })
+    print(res)
+
 
 
 def send_to_notehub(imageName, destDeviceUID):
@@ -35,7 +41,6 @@ def send_to_notehub(imageName, destDeviceUID):
     # Qual 1, 2 have a ~3kb filesize, q3 bumps to 4k with no notable change
     imageData.save('temp.webp', 'webp', optimize=True, quality=2)
     # Image.close(imageName)
-
 
     # convert b64
     with open("temp.webp", "rb") as image_file:
@@ -64,7 +69,7 @@ def get_from_notehub(imageName):
         print("can't get image from notehub right now")
         print(res)
         return
-    
+
     b64Data = res['body']['image']
     imageData = Image.open(io.BytesIO(base64.b64decode(b64Data)))
     imageData = imageData.convert('RGB')
