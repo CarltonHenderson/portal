@@ -6,6 +6,6 @@ blue_devUID = "dev:94deb822f2a6"
 
 target_device = blue_devUID if this_devUID == blue_devUID else orange_devUID
 
-debug=True
+debug=False
 if debug:
     target_device = orange_devUID
