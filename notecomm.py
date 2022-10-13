@@ -65,6 +65,6 @@ def get_from_notehub(imageName):
         return
     
     b64Data = res['body']['image']
-    imageData = base64.b64decode(b64Data)
+    imageData = Image.open(io.BytesIO(base64.b64decode(b64Data)))
     imageData = imageData.convert('RGB')
     imageData.save(imageName, 'jpeg')
