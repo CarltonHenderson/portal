@@ -33,6 +33,16 @@ def init_notecard(notehub_productuid, i2c_device_file_path):
         "files": ["image.qi"]
     })
     print(res)
+    res = CARD.Transaction({
+        "req": "note.template",
+        "file": "image.qo",
+        "body": {
+            'image': "string",
+            'destDeviceUID': "string"
+        }
+    }
+    )
+    print(res)
 
 
 def send_to_notehub(imageName, destDeviceUID):
@@ -54,15 +64,21 @@ def send_to_notehub(imageName, destDeviceUID):
         b64Data = base64.b64encode(image_file.read()).decode('UTF-8')
 
         # send a note.add with the image as the body
-        req = {'req': 'note.add'}
-        req['file'] = 'image.qo'
-        req['sync'] = True
-        req['body'] = {
-            'image': b64Data,
-            'destDeviceUID': destDeviceUID
-        }
-        res = CARD.Transaction(req)
-        print(res)
+        request = {'req': 'note.add',
+                   'file': 'image.qo',
+                   'sync': True,
+                   'body': {
+                       'image': b64Data,
+                       'destDeviceUID': destDeviceUID
+                   }}
+        result = CARD.Transaction(request)
+        print(result)
+
+        # check flash storage usage
+        request = {'req': 'card.status'}
+        result = CARD.Transaction(request)
+        print(result)
+        print(f"Flash storage is {result.storage}. Please don't exceed 80%.")
 
 
 def get_from_notehub(imageName):
