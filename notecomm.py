@@ -1,37 +1,44 @@
-# pip3 install note-python
+"""Use a cellular/wifi Notecard to send/receive images to/from Notehub.io
+
+init_notecard(...) needs to be run once on startup. Afterward send_to_notehub()
+and get_from_notehub() can be called, one at a time, as desired.
+"""
+
 import io
-import notecard
-# pip3 install Pillow
-from PIL import Image
 import base64
-# pip install python-periphery
-from periphery import I2C
 
-notehub_uid = 'com.blues.khorlitz:portal'
-port = I2C('/dev/i2c-1')
-card = notecard.OpenI2C(port, 0, 0)
-
-# init needs to be run once on startup, afterward
-# repeatedly alternate send and rcv between the  cards
+import notecard  # pip3 install note-python
+from PIL import Image  # pip3 install Pillow
+from periphery import I2C  # pip install python-periphery
 
 
-def init_notecard():
+CARD = 0  # notecard
+
+
+def init_notecard(notehub_productuid, i2c_device_file_path):
+    """Run once at startup before send_to_notehub() or get_from_notehub()"""
+    global CARD
+
+    port = I2C(i2c_device_file_path)
+    CARD = notecard.OpenI2C(port, 0, 0)
+
     req = {'req': 'hub.set'}
-    req['product'] = notehub_uid
-    req['host'] = 'i.staging.blues.tools'
+    req['product'] = notehub_productuid
     req['mode'] = 'continuous'
     req['sync'] = True
-    res = card.Transaction(req)
+    res = CARD.Transaction(req)
     print(res)
-    res = card.Transaction({
+    res = CARD.Transaction({
         "req": "file.delete",
         "files": ["image.qi"]
     })
     print(res)
 
 
-
 def send_to_notehub(imageName, destDeviceUID):
+    """Compresses and encodes an image. Then sends the encoding to the Notecard
+    which will forward it to Notehub as soon as cellular signal is found."""
+
     # load image from file
     imageData = Image.open(imageName)
     imageData = imageData.resize((240, 200))
@@ -54,17 +61,19 @@ def send_to_notehub(imageName, destDeviceUID):
             'image': b64Data,
             'destDeviceUID': destDeviceUID
         }
-        res = card.Transaction(req)
+        res = CARD.Transaction(req)
         print(res)
 
 
 def get_from_notehub(imageName):
+    """If an image is the inbound queue, image.qi, decode and save the image."""
+
     req = {'req': 'note.get'}
     req['file'] = 'image.qi'
     req['sync'] = True
     req['delete'] = True
 
-    res = card.Transaction(req)
+    res = CARD.Transaction(req)
     if not ('body' in res and 'image' in res['body']):
         print("can't get image from notehub right now")
         print(res)
