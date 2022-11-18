@@ -12,7 +12,9 @@ like a super slow video conference on two smartphones using their rear cameras.
 
 ## Configuration
 
-[config.py](config.py) contains the variables you need to set for your environment.
+- [config.py](config.py) contains the variables you need to set for your environment.
+- Make sure your Notecard is using fw version `v3.2.1`
+  [or later](https://dev.blues.io/notecard/notecard-firmware-updates/).
 
 
 ## Communication
